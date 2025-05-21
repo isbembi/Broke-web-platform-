@@ -1,14 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Broke — Главная</title>
+    <title>Dashboard</title>
 </head>
 <body>
-<h2>Добро пожаловать в Broke</h2>
+<h1>Добро пожаловать в Broke</h1>
 
-<p>Вы успешно вошли в систему. Здесь будет ваш финансовый дашборд.</p>
+<h2>Добавить расход</h2>
+<form th:action="@{/add-expense}" th:object="${expense}" method="post">
+    <label>Сумма:</label>
+    <input type="number" step="0.01" th:field="*{amount}" required/><br/>
 
-<a th:href="@{/logout}">Выйти</a>
+    <label>Категория:</label>
+    <input type="text" th:field="*{category}" required/><br/>
+
+    <label>Описание:</label>
+    <input type="text" th:field="*{description}" /><br/>
+
+    <button type="submit">Добавить</button>
+</form>
+
+<h2>Последние расходы</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Категория</th>
+        <th>Описание</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="expense : ${expenses}">
+        <td th:text="${expense.date}">01.01.2025</td>
+        <td th:text="${expense.category}">Продукты</td>
+        <td th:text="${expense.description}">Магазин</td>
+        <td th:text="${expense.amount}">500</td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Всего потрачено: <span th:text="${total}">0</span></h3>
+<h3>Остаток: <span th:text="${remaining}">1000</span></h3>
+
 </body>
 </html>
