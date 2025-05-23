@@ -18,13 +18,18 @@ public class Challenge {
 
     private boolean isDone;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Challenge() {}
 
-    public Challenge(String title, String description, int rewardPoints, boolean isDone) {
+    public Challenge(String title, String description, int rewardPoints, boolean isDone, User user) {
         this.title = title;
         this.description = description;
         this.rewardPoints = rewardPoints;
         this.isDone = isDone;
+        this.user =user;
     }
 
     public boolean isDone() {
@@ -50,4 +55,7 @@ public class Challenge {
     public int getRewardPoints() { return rewardPoints; }
 
     public void setRewardPoints(int rewardPoints) { this.rewardPoints = rewardPoints; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user;}
+
 }
