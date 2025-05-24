@@ -1,6 +1,8 @@
 package kg.alatoo.broke.services;
 
+import kg.alatoo.broke.dto.UserDTO;
 import kg.alatoo.broke.entities.User;
+import kg.alatoo.broke.mappers.UserMapper;
 import kg.alatoo.broke.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(User user) {
+    public User register(UserDTO dto) {
+        User user = UserMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
         return userRepository.save(user);

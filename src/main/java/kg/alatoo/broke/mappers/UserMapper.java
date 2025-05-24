@@ -4,6 +4,7 @@ import kg.alatoo.broke.dto.UserDTO;
 import kg.alatoo.broke.entities.User;
 
 public class UserMapper {
+
     public static User toEntity(UserDTO dto) {
         User user = new User();
         user.setUsername(dto.getUsername());
