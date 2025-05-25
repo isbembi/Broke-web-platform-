@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/user/challenges")
+@RequestMapping("/debug")
 public class UserChallengeController {
 
     private final UserChallengeService userChallengeService;
@@ -55,11 +55,14 @@ public class UserChallengeController {
 
     @GetMapping("/active")
     public ResponseEntity<?> getActiveChallenge(@RequestHeader("Authorization") String authHeader) {
+        System.out.println("🔥🔥🔥 /api/user/challenges/active CALLED");
+
         String email = jwtService.extractUsername(authHeader.substring(7));
         User user = userService.findByEmail(email).orElseThrow();
 
         Optional<UserChallenge> active = userChallengeService.getActiveChallengeByUser(user);
         return ResponseEntity.of(active);
     }
+
 
 }
