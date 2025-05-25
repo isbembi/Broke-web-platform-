@@ -49,6 +49,11 @@ public class ExpenseController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         BigDecimal balance = expenseService.getRemainingBalance(user);
+
+        System.out.println("USER EMAIL: " + user.getEmail());
+        System.out.println("INITIAL AMOUNT: " + user.getInitialAmount());
+
         return ResponseEntity.ok(balance);
+
     }
 }

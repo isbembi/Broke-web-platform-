@@ -1,5 +1,6 @@
 package kg.alatoo.broke.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,29 +17,22 @@ public class Challenge {
 
     private int rewardPoints;
 
-    private boolean isDone;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
+
+
 
     public Challenge() {}
 
-    public Challenge(String title, String description, int rewardPoints, boolean isDone, User user) {
+    public Challenge(String title, String description, int rewardPoints,  User user) {
         this.title = title;
         this.description = description;
         this.rewardPoints = rewardPoints;
-        this.isDone = isDone;
         this.user =user;
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public void setDone(boolean isDone) {
-        this.isDone = isDone;
-    }
 
     public Long getId() { return id; }
 

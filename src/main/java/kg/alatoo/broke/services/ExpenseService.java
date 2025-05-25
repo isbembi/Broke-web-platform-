@@ -36,14 +36,15 @@ public class ExpenseService {
     }
 
     public BigDecimal getTotalExpenses(User user) {
-        return expenseRepository.findByUser(user)
-                .stream()
+        return expenseRepository.findByUser(user).stream()
                 .map(expense -> BigDecimal.valueOf(expense.getAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getRemainingBalance(User user) {
-        BigDecimal totalExpenses = getTotalExpenses(user);
-        return user.getInitialAmount().subtract(totalExpenses);
+        BigDecimal total = getTotalExpenses(user);
+        BigDecimal initial = user.getInitialAmount() != null ? user.getInitialAmount() : BigDecimal.ZERO;
+        return initial.subtract(total);
+
     }
 }
