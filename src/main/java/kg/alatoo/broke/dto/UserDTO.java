@@ -1,11 +1,30 @@
 package kg.alatoo.broke.dto;
 
+import java.math.BigDecimal;
+
 public class UserDTO {
     private String username;
     private String email;
     private String password;
+    private BigDecimal initialAmount;
 
-    public UserDTO() {}
+    public UserDTO(String username, String email, String password, BigDecimal initialAmount) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.initialAmount = initialAmount;
+    }
+
+    public UserDTO() {
+    }
+
+    public BigDecimal getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(BigDecimal initialAmount) {
+        this.initialAmount = initialAmount;
+    }
 
     public String getUsername() {
         return username;
@@ -31,9 +50,4 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 }

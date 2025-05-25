@@ -2,6 +2,8 @@ package kg.alatoo.broke.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "users")
@@ -18,14 +20,26 @@ public class User {
 
     private String password;
 
-    private String role; // USER, ADMIN
+    private String role;
 
-    public User(Long id, String username, String email, String password, String role) {
+    @Column(name = "initial_amount")
+    private BigDecimal initialAmount;
+
+    public BigDecimal getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(BigDecimal initialAmount) {
+        this.initialAmount = initialAmount;
+    }
+
+    public User(Long id, String username, String email, String password, String role, BigDecimal initialAmount) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.initialAmount = initialAmount;
     }
 
     public User() {

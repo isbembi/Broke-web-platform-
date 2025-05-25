@@ -8,6 +8,7 @@ import kg.alatoo.broke.repositories.ExpenseRepository;
 import kg.alatoo.broke.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -32,5 +33,17 @@ public class ExpenseService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return expenseRepository.findByUser(user);
+    }
+
+    public BigDecimal getTotalExpenses(User user) {
+        return expenseRepository.findByUser(user)
+                .stream()
+                .map(expense -> BigDecimal.valueOf(expense.getAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getRemainingBalance(User user) {
+        BigDecimal totalExpenses = getTotalExpenses(user);
+        return user.getInitialAmount().subtract(totalExpenses);
     }
 }
