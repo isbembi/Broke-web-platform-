@@ -29,14 +29,19 @@ public class ExpenseController {
         this.userService = userService;
     }
 
-    @PostMapping("/{userId}")
-    public Expense addExpense(@PathVariable Long userId, @RequestBody ExpenseDTO dto) {
-        return expenseService.addExpense(dto, userId);
+    @PostMapping("/user")
+    public Expense addExpense(@RequestBody ExpenseDTO dto,
+                              @RequestHeader("Authorization") String authHeader) {
+        String email = jwtService.extractUsername(authHeader.substring(7));
+        User user = userService.findByEmail(email).orElseThrow();
+        return expenseService.addExpense(dto, user.getId());
     }
 
-    @GetMapping("/{userId}")
-    public List<Expense> getExpenses(@PathVariable Long userId) {
-        return expenseService.getByUser(userId);
+    @GetMapping
+    public List<Expense> getExpenses(@RequestHeader("Authorization") String authHeader) {
+        String email = jwtService.extractUsername(authHeader.substring(7));
+        User user = userService.findByEmail(email).orElseThrow();
+        return expenseService.getByUser(user.getId());
     }
 
 
@@ -50,10 +55,19 @@ public class ExpenseController {
 
         BigDecimal balance = expenseService.getRemainingBalance(user);
 
-        System.out.println("USER EMAIL: " + user.getEmail());
-        System.out.println("INITIAL AMOUNT: " + user.getInitialAmount());
 
         return ResponseEntity.ok(balance);
 
     }
+
+    @DeleteMapping("/{expenseId}")
+    public ResponseEntity<?> deleteExpense(@PathVariable Long expenseId,
+                                           @RequestHeader("Authorization") String authHeader) {
+        String email = jwtService.extractUsername(authHeader.substring(7));
+        User user = userService.findByEmail(email).orElseThrow();
+
+        expenseService.deleteExpense(expenseId, user.getId());
+        return ResponseEntity.ok("Expense deleted successfully.");
+    }
+
 }
