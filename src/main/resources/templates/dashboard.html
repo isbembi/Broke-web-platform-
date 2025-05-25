@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrokeBot — Панель управления</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+<!-- Header -->
+<header class="bg-gray-800 p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-green-400">💸 BrokeBot</h1>
+    <nav>
+        <a href="#" class="text-white mr-4 hover:text-green-300">Профиль</a>
+        <a href="/logout" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">Выйти</a>
+    </nav>
+</header>
+
+<!-- Dashboard Section -->
+<section class="max-w-5xl mx-auto py-10 px-4">
+    <h2 class="text-3xl font-bold text-center text-green-400 mb-8">📋 Панель управления</h2>
+
+    <!-- Balance and Actions -->
+    <div class="flex flex-col md:flex-row justify-between items-center bg-gray-800 p-6 rounded-lg mb-6">
+        <p class="text-xl">💰 Остаток:
+            <span class="text-yellow-300 font-semibold" th:text="${balance} + ' сом'">430 сом</span>
+        </p>
+        <div class="mt-4 md:mt-0">
+            <a href="/expenses/new" class="text-blue-400 hover:underline mr-4">+ Добавить расход</a>
+            <a href="/analytics" class="text-blue-400 hover:underline">Посмотреть аналитику</a>
+        </div>
+    </div>
+
+    <!-- History and Tip -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-300 mb-2 italic">История расходов</h3>
+            <ul class="text-gray-400 list-disc list-inside">
+                <li th:each="e : ${expenses}" th:text="'- ' + ${e.amount} + ' сом — ' + ${e.description}">- 70 сом — обед</li>
+            </ul>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-300 mb-2 italic">Совет дня</h3>
+            <p class="text-gray-400" th:text="${tip}">🚶‍♂️ Ходи пешком — сэкономишь на транспорте!</p>
+        </div>
+    </div>
+
+    <!-- Challenge Section -->
+    <div class="bg-gray-800 p-6 rounded-lg mb-6 text-center">
+        <p class="text-lg mb-2" th:text="'Текущий челлендж: ' + ${challenge}">✔ Проживи день без кофе</p>
+        <a href="/challenges/new" class="text-blue-400 hover:underline">Начать новый челлендж</a>
+    </div>
+
+    <!-- Tips Catalog -->
+    <div class="bg-gray-800 p-6 rounded-lg text-center">
+        <a href="/tips" class="text-blue-400 hover:underline">Перейти в каталог лайфхаков</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 p-6 text-center text-gray-500">
+    © 2025 BrokeBot. Made with Spring Boot & Thymeleaf
+</footer>
+
+</body>
+</html>
