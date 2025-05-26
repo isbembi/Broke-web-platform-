@@ -35,4 +35,10 @@ public class ChallengeService {
         return challengeRepository.findByUser(user);
     }
 
+    public Challenge findById(Long id) {
+        return challengeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Challenge not found with id: " + id));
+    }
+
+
 }

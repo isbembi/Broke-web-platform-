@@ -8,6 +8,9 @@ import kg.alatoo.broke.entities.User;
 import kg.alatoo.broke.services.ExpenseService;
 import kg.alatoo.broke.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -36,6 +39,20 @@ public class ExpenseController {
         User user = userService.findByEmail(email).orElseThrow();
         return expenseService.addExpense(dto, user.getId());
     }
+
+    @GetMapping("/expenses/new")
+    public String showAddExpenseForm(Model model) {
+        model.addAttribute("expense", new ExpenseDTO());
+        return "add-expense";
+    }
+    @PostMapping("/expenses/new")
+    public String addExpense(@ModelAttribute ExpenseDTO expenseDTO,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
+        expenseService.addExpense(expenseDTO, user.getId());
+        return "redirect:/dashboard";
+    }
+
 
     @GetMapping
     public List<Expense> getExpenses(@RequestHeader("Authorization") String authHeader) {

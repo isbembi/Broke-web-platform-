@@ -8,6 +8,8 @@ import kg.alatoo.broke.repositories.ExpenseRepository;
 import kg.alatoo.broke.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -55,6 +57,13 @@ public class ExpenseService {
             throw new RuntimeException("Unauthorized");
         }
         expenseRepository.delete(expense);
+    }
+
+
+    public BigDecimal getTotalSpent(User user) {
+        return expenseRepository.findByUserId(user.getId()).stream()
+                .map(e -> BigDecimal.valueOf(e.getAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }

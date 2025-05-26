@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BrokeBot — Челленджи</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+<header class="bg-gray-800 p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-green-400">💸 BrokeBot</h1>
+    <nav>
+        <a href="/dashboard" class="text-white mr-4 hover:text-green-300">Назад</a>
+        <a href="/logout" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">Выйти</a>
+    </nav>
+</header>
+
+<main class="max-w-4xl mx-auto py-10 px-4">
+    <h2 class="text-3xl font-bold text-center text-green-400 mb-8">📌 Доступные челленджи</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div th:each="challenge : ${challenges}" class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-yellow-300 mb-2" th:text="${challenge.title}">Название</h3>
+            <p class="text-gray-400 mb-4" th:text="${challenge.description}">Описание челленджа</p>
+            <form th:action="@{/debug/challenges/start}" method="post">
+                <input type="hidden" name="id" th:value="${challenge.id}" />
+                <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                    🚀 Начать
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-gray-800 p-6 text-center text-gray-500 mt-10">
+    © 2025 BrokeBot. Made with Spring Boot & Tailwind
+</footer>
+
+</body>
+</html>

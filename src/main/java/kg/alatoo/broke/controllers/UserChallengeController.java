@@ -5,9 +5,12 @@ import kg.alatoo.broke.entities.User;
 import kg.alatoo.broke.entities.UserChallenge;
 import kg.alatoo.broke.repositories.ChallengeRepository;
 import kg.alatoo.broke.security.JwtService;
+import kg.alatoo.broke.services.ChallengeService;
 import kg.alatoo.broke.services.UserChallengeService;
 import kg.alatoo.broke.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,15 +23,18 @@ public class UserChallengeController {
     private final ChallengeRepository challengeRepository;
     private final UserService userService;
     private final JwtService jwtService;
+    private final ChallengeService challengeService;
 
     public UserChallengeController(UserChallengeService userChallengeService,
                                    ChallengeRepository challengeRepository,
                                    UserService userService,
-                                   JwtService jwtService) {
+                                   JwtService jwtService,
+                                   ChallengeService challengeService) {
         this.userChallengeService = userChallengeService;
         this.challengeRepository = challengeRepository;
         this.userService = userService;
         this.jwtService = jwtService;
+        this.challengeService = challengeService;
     }
 
     @PostMapping("/start/{id}")
@@ -62,6 +68,14 @@ public class UserChallengeController {
 
         Optional<UserChallenge> active = userChallengeService.getActiveChallengeByUser(user);
         return ResponseEntity.of(active);
+    }
+
+    @PostMapping("/challenges/start")
+    public String startChallenge(@RequestParam Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
+        Challenge challenge = challengeService.findById(id);
+        userChallengeService.startChallenge(user, challenge);
+        return "redirect:/dashboard";
     }
 
 

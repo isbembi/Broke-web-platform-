@@ -1,0 +1,6 @@
+<h2>Аналитика расходов</h2>
+<p>Общая сумма: <span th:text="${total}">0</span> сом</p>
+<ul>
+    <li th:each="e : ${expenses}" th:text="${e.description} + ' — ' + ${e.amount} + ' сом'"></li>
+</ul>
+<a href="/dashboard">← Назад</a>
